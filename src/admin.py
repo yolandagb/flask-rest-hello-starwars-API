@@ -14,3 +14,22 @@ def setup_admin(app):
 
     # You can duplicate that line to add mew models
     # admin.add_view(ModelView(YourModelName, db.session))
+
+# from flask import Flask, jsonify, request
+# import json
+# app = Flask(__name__)
+
+# todos = [
+#     { "label": "My first task", "done": False },
+#     { "label": "My second task", "done": False }
+#     ]
+# @app.route('/todoss', methods=['GET'])
+# def hello_world():
+#     return jsonify(todos)
+
+# @app.route('/todos', methods=['POST'])
+# def add_new_todo():
+#     request_body = json.loads(request.data)
+#     todos.append(request_body)
+#     return jsonify(todos)
+     
