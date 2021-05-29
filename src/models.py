@@ -3,10 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class User(db.Model):
+    __tablename__ = 'User'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    nickname = db.Column(db.String(250))
+    email = db.Column(db.String(250), nullable=False)
+    password = db.Column(db.String(120))
+    favorites_post = db.Column(db.Integer, ForeignKey('favorites.id'))
+    
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -15,47 +18,71 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
+            "nickname": self.nickname,
+            "favorites_post": self.favorites_post,
             # do not serialize the password, its a security breach
         }
 
-
-# class Home (Base):
-#      __tablename__ = 'home'
-#      id = Column(Integer, primary_key=True)
-#      password = Column(Integer, ForeignKey('Login.Password'))
-#      user_name =  Column(Integer, ForeignKey('User.user_name'))
-#      url = Column(String(250), nullable=False)
-#      user_id = Column(Integer, ForeignKey('user.id'))
-#      post = Column(Integer, ForeignKey('post.id'))
-#      planets_post = Column(Integer, ForeignKey('planets.post'))
-#      characters_post = Column(Integer, ForeignKey('characters.post'))
+class Favorites (Base):
+    __tablename__ = 'favorites'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    planets_post= Column(Integer, ForeignKey ('planets.id'))
+    characters_post = Column(Integer, ForeignKey('characters.id'))
      
+    def __repr__(self):
+        return 'Favorites < %r>' % self.favorites
 
-# class User(Base):
-#      __tablename__ = 'User'
-#      id = Column(Integer, primary_key=True)
-#      username = Column(String(250))
-#      password = Column(Integer, ForeignKey('Login.password'))
-#      email = Column(String(250), nullable=False)
-#      post = Column(Integer, ForeignKey('post.id'))
-
-# class Like (Base):
-#      __tablename__ = 'like'
-#      # Here we define columns for the table address.
-#      # Notice that each column is also a normal Python instance attribute.
-#      id = Column(Integer, primary_key=True)
-#      likes = Column(String(250))
-#      user_id = Column(Integer, ForeignKey('post.id'))
-#      like = Column(Integer, ForeignKey('like.id'))
-#      planets_post = Column(Integer, ForeignKey ('planets.post'))
-#      characters_post = Column(Integer, ForeignKey('characters.post'))
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "planets_post": self.planets_post,
+            "characters_post": self.characters_post,
+           
+        }
      
-# class Characters (Base):
-#      __tablename__ = 'characters'
-#      # Here we define columns for the table address.
-#      # Notice that each column is also a normal Python instance attribute.
-#      id = Column(Integer, primary_key=True)
-#      likes = Column(String(250))
-#      user_id = Column(Integer, ForeignKey('user.id'))
-#      like = Column(Integer, ForeignKey('like.id'))
-#      user = relationship ('User')    
+     
+class Characters (Base):
+    __tablename__ = 'characters'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id')) 
+    favorites_list = Column(Integer, ForeignKey('favorites.id'))
+    comments = Column(String(500)) 
+
+    def __repr__(self):
+        return 'Characters < %r>' % self.characters
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "favorites_list": self.favorites_list,
+            "comments": self.comments,
+        }
+
+
+class Planets (Base):
+    __tablename__ = 'planets'
+    id = Column(Integer, primary_key=True)
+    favorites_list = Column(Integer, ForeignKey('favorites.id'))
+    user_id = Column(Integer, ForeignKey('user.id')) 
+    comments = Column(String(500))
+
+    def __repr__(self):
+        return 'Planets < %r>' % self.planets
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "favorites_list": self.favorites_list,
+            "comments": self.comments,
+          
+        }   
+
+def to_dict(self):
+    return {}
+
+# Draw from SQLAlchemy base
+render_er(Base, 'diagram.png') 
