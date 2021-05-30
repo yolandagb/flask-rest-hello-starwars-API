@@ -36,6 +36,25 @@ def get_users():
     serialized_users = list(map(lambda user:user.serialize(),users))
     return jsonify(serialized_users), 200
 
+
+@app.route('/favorites', methods=['GET'])
+def get_favorites():
+    favorites = favorite.query.all()
+    serialized_favorites = list(map(lambda favorites:favorites.serialize(),favorites))
+    return jsonify(serialized_favorites), 200
+
+@app.route('/characters', methods=['GET'])
+def get_characters():
+    characters = character.query.all()
+    serialized_characters = list(map(lambda character:character.serialize(),characters))
+    return jsonify(serialized_characters), 200
+
+@app.route('/planets', methods=['GET'])
+def get_planets():
+    planets = planet.query.all()
+    serialized_planets = list(map(lambda planet:planet.serialize(),planets))
+    return jsonify(serialized_planets), 200
+   
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))

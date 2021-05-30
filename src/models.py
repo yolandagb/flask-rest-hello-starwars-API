@@ -8,7 +8,7 @@ class User(db.Model):
     nickname = db.Column(db.String(250))
     email = db.Column(db.String(250), nullable=False)
     password = db.Column(db.String(120))
-    favorites_post = db.Column(db.Integer, ForeignKey('favorites.id'))
+    # favorites_post = db.Column(db.Integer, ForeignKey('favorites.id'))
     
 
     def __repr__(self):
@@ -23,12 +23,12 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
 
-class Favorites (Base):
+class Favorites(db.Model):
     __tablename__ = 'favorites'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    planets_post= Column(Integer, ForeignKey ('planets.id'))
-    characters_post = Column(Integer, ForeignKey('characters.id'))
+    id = db.Column(db.Integer, primary_key=True)
+    # user_id = Column(Integer, ForeignKey('user.id'))
+    # planets_post= Column(Integer, ForeignKey ('planets.id'))
+    # characters_post = Column(Integer, ForeignKey('characters.id'))
      
     def __repr__(self):
         return 'Favorites < %r>' % self.favorites
@@ -43,12 +43,12 @@ class Favorites (Base):
         }
      
      
-class Characters (Base):
+class Characters(db.Model):
     __tablename__ = 'characters'
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('user.id')) 
-    favorites_list = Column(Integer, ForeignKey('favorites.id'))
-    comments = Column(String(500)) 
+    id = db.Column(db.Integer, primary_key=True)
+    # user_id = Column(Integer, ForeignKey('user.id')) 
+    # favorites_list = Column(Integer, ForeignKey('favorites.id'))
+    comments = db.Column(db.String(500)) 
 
     def __repr__(self):
         return 'Characters < %r>' % self.characters
@@ -62,12 +62,12 @@ class Characters (Base):
         }
 
 
-class Planets (Base):
+class Planets(db.Model):
     __tablename__ = 'planets'
-    id = Column(Integer, primary_key=True)
-    favorites_list = Column(Integer, ForeignKey('favorites.id'))
-    user_id = Column(Integer, ForeignKey('user.id')) 
-    comments = Column(String(500))
+    id = db.Column(db.Integer, primary_key=True)
+    # favorites_list = Column(Integer, ForeignKey('favorites.id'))
+    # user_id = Column(Integer, ForeignKey('user.id')) 
+    comments = db.Column(db.String(500))
 
     def __repr__(self):
         return 'Planets < %r>' % self.planets
@@ -81,8 +81,8 @@ class Planets (Base):
           
         }   
 
-def to_dict(self):
-    return {}
+# def to_dict(self):
+#     return {}
 
-# Draw from SQLAlchemy base
-render_er(Base, 'diagram.png') 
+# # Draw from SQLAlchemy base
+# render_er(db.Model, '') 
