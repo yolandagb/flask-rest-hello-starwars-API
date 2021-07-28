@@ -19,8 +19,7 @@
 
 The following steps are automatically runned withing gitpod, if you are doing a local installation you have to do them manually:
 
-```sh
-pipenv install;
+```sh;
 mysql -u root -e "CREATE DATABASE example";
 pipenv run init;
 pipenv run migrate;

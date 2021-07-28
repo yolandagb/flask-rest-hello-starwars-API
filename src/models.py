@@ -1,4 +1,11 @@
 from flask_sqlalchemy import SQLAlchemy
+import os
+import sys
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
+from sqlalchemy import create_engine
+from eralchemy import render_er
 
 db = SQLAlchemy()
 
@@ -23,12 +30,12 @@ class User(db.Model):
             # do not serialize the password, its a security breach
         }
 
-class Favorites(db.Model):
+class Favourites(db.Model):
     __tablename__ = 'favorites'
     id = db.Column(db.Integer, primary_key=True)
-    # user_id = Column(Integer, ForeignKey('user.id'))
-    # planets_post= Column(Integer, ForeignKey ('planets.id'))
-    # characters_post = Column(Integer, ForeignKey('characters.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    planets= db.Column(db.Integer, db.ForeignKey ('planets.id'))
+    characters= db.Column(db.Integer, db.ForeignKey('characters.id'))
      
     def __repr__(self):
         return 'Favorites < %r>' % self.favorites
@@ -37,8 +44,8 @@ class Favorites(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "planets_post": self.planets_post,
-            "characters_post": self.characters_post,
+            "planets": self.planets,
+            "characters": self.characters,
            
         }
      
@@ -46,9 +53,9 @@ class Favorites(db.Model):
 class Characters(db.Model):
     __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key=True)
-    # user_id = Column(Integer, ForeignKey('user.id')) 
-    # favorites_list = Column(Integer, ForeignKey('favorites.id'))
-    comments = db.Column(db.String(500)) 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id')) 
+    favourites= db.Column (db.Integer, db.ForeignKey('favourites.id'))
+    
 
     def __repr__(self):
         return 'Characters < %r>' % self.characters
@@ -57,17 +64,17 @@ class Characters(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "favorites_list": self.favorites_list,
-            "comments": self.comments,
+            "favourites": self.favourites,
+            
         }
 
 
 class Planets(db.Model):
     __tablename__ = 'planets'
     id = db.Column(db.Integer, primary_key=True)
-    # favorites_list = Column(Integer, ForeignKey('favorites.id'))
-    # user_id = Column(Integer, ForeignKey('user.id')) 
-    comments = db.Column(db.String(500))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id')) 
+    favourites= db.Column(db.Integer, db.ForeignKey('favourites.id'))
+    
 
     def __repr__(self):
         return 'Planets < %r>' % self.planets
@@ -76,13 +83,13 @@ class Planets(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
-            "favorites_list": self.favorites_list,
-            "comments": self.comments,
+            "favourites": self.favourites,
+            
           
         }   
 
-# def to_dict(self):
-#     return {}
+  def to_dict(self):
+        return {}
 
-# # Draw from SQLAlchemy base
-# render_er(db.Model, '') 
+## Draw from SQLAlchemy base
+render_er(db.Model, 'diagram.png')
